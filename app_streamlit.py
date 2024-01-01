@@ -154,3 +154,14 @@ if submit_button:  # Mengeksekusi kode ini hanya jika tombol "Submit" ditekan
                     """,
                     unsafe_allow_html=True
                 )
+                # Tambahkan kode untuk menghitung total rating dan jumlah respons
+                rating_input = st.number_input(f"Rate this response (1-100) for Option {i}: ", min_value=1, max_value=100, key=f"rating_{i}")
+                if rating_input:
+                    total_rating += rating_input
+                    total_responses += 1
+
+# Di akhir respons, tampilkan total rating dan persentase ratingnya
+if total_responses > 0:
+    average_rating = total_rating / total_responses
+    st.write(f"Total Responses: {total_responses}")
+    st.write(f"Average Rating: {average_rating:.2f}%")
