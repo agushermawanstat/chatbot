@@ -98,8 +98,22 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
 # Streamlit UI
 st.title("CIT-Knowledge Management Chatbot")
 
-# Get user input
-user_input = st.text_input("Enter your question (type 'exit' to exit):")
+# Get user input with wider input box and the same prompt as before
+user_input = st.text_area("To provide a more accurate answer, please provide details of your question or issue (type 'exit' to exit):", key='user_input')
+st.markdown(
+    """
+    <style>
+        textarea {
+            width: 100%; /* Set the width of the textarea to 100% of the container */
+            border: none; /* Remove the textarea border */
+            padding: 10px; /* Add padding for a better appearance */
+            font-size: 16px; /* Adjust font size as needed */
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 if user_input.lower() != 'exit':
     response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
     if response_options:
