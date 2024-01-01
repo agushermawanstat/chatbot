@@ -49,10 +49,14 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
     similarities = cosine_similarity(user_vector, tfidf_matrix).flatten()
 
     if len(similarities) == 0 or len(similarities) < top_k or all(similarity == 0 for similarity in similarities):
-        # Tambahkan argumen key yang unik
-        detail_question = st.text_area("Saya perlu informasi lebih detail untuk memberikan jawaban yang lebih akurat. Mohon berikan detail pertanyaan atau masalah Anda:", key="detail_area_" + str(hash(user_input)))
-        user_input += " " + detail_question
-        return generate_response_tfidf_with_probability_and_detail(user_input, df)
+        # Check if detail question has already been asked
+        if 'asked_detail_question' not in st.session_state:
+            # Set flag to indicate that the detail question has been asked
+            st.session_state.asked_detail_question = True
+            # Tambahkan argumen key yang unik
+            detail_question = st.text_area("Saya perlu informasi lebih detail untuk memberikan jawaban yang lebih akurat. Mohon berikan detail pertanyaan atau masalah Anda:", key="detail_area_" + str(hash(user_input)))
+            user_input += " " + detail_question
+            return generate_response_tfidf_with_probability_and_detail(user_input, df)
     else:
         max_probability = max(similarities)
         if max_probability >= threshold_probability:
