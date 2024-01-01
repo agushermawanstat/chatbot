@@ -103,10 +103,53 @@ st.title("CIT-Knowledge Management Chatbot")
 # Get user input with wider input box and the same prompt as before
 user_input = st.text_area("Enter your question (type 'exit' to exit):", key='user_input')
 if user_input.lower() == 'exit':
-    st.button("Reset")  # Jika pengguna ingin keluar, tampilkan tombol "Reset"
+    submit_button = st.button("Reset", key='reset_button')  # Jika pengguna ingin keluar, ganti label tombol menjadi "Reset"
 else:
-    col1, col2 = st.beta_columns(2)  # Membagi layar menjadi dua kolom
-    if col1.button("Submit"):  # Tombol "Submit" di kolom pertama
+    submit_button = st.button("Submit", key='submit_button')  # Jika tidak, gunakan label "Submit" biasa
+
+st.markdown(
+    """
+    <style>
+        .input-container {
+            position: relative;
+        }
+        .submit-button {
+            background-color: #4CAF50; /* Green background color */
+            color: white; /* White text color */
+            padding: 10px 20px; /* Add padding to the button */
+            border: none; /* Remove button border */
+            border-radius: 5px; /* Add border radius to the button */
+            font-size: 16px; /* Adjust font size as needed */
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+        .reset-button {
+            background-color: #F08080; /* Red background color */
+            color: white; /* White text color */
+            padding: 10px 20px; /* Add padding to the button */
+            border: none; /* Remove button border */
+            border-radius: 5px; /* Add border radius to the button */
+            font-size: 16px; /* Adjust font size as needed */
+            position: absolute;
+            bottom: 10px;
+            right: 150px; /* Adjust the position of the Reset button */
+        }
+        textarea {
+            width: 100%; /* Set the width of the textarea to 100% of the container */
+            border: none; /* Remove the textarea border */
+            padding: 10px; /* Add padding for a better appearance */
+            font-size: 16px; /* Adjust font size as needed */
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+if submit_button:  # Mengeksekusi kode ini hanya jika tombol "Submit" atau "Reset" ditekan
+    if user_input.lower() == 'exit':
+        st.text("You have exited the chat.")  # Menampilkan pesan ketika pengguna keluar
+    else:
         response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
         if response_options:
             for i, (response, probability) in enumerate(response_options, start=1):
@@ -127,34 +170,3 @@ else:
                     """,
                     unsafe_allow_html=True
                 )
-    if col2.button("Reset"):  # Tombol "Reset" di kolom kedua
-        user_input = ""  # Reset pertanyaan pengguna
-
-st.markdown(
-    """
-    <style>
-        .input-container {
-            position: relative;
-        }
-        .submit-button {
-            background-color: #4CAF50; /* Green background color */
-            color: white; /* White text color */
-            padding: 10px 20px; /* Add padding to the button */
-            border: none; /* Remove button border */
-            border-radius: 5px; /* Add border radius to the button */
-            font-size: 16px; /* Adjust font size as needed */
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-        }
-        textarea {
-            width: 100%; /* Set the width of the textarea to 100% of the container */
-            border: none; /* Remove the textarea border */
-            padding: 10px; /* Add padding for a better appearance */
-            font-size: 16px; /* Adjust font size as needed */
-        }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
