@@ -102,16 +102,40 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
             unsafe_allow_html=True
         )
 
-import streamlit as st
-
-
 # Streamlit UI
 st.title("CIT-Knowledge Management Chatbot")
 
-# Inisialisasi dataframe untuk feedback di awal aplikasi
-feedback_data = pd.DataFrame(columns=["Response", "Rating"])
+# Get user input with wider input box and the same prompt as before
+user_input = st.text_area("Enter your question (type 'exit' to exit):", key='user_input')
+submit_button = st.button("Submit")  # Tambahkan tombol "Submit"
 
-# ... (kode lainnya tetap sama)
+st.markdown(
+    """
+    <style>
+        .input-container {
+            position: relative;
+        }
+        .submit-button {
+            background-color: #4CAF50; /* Green background color */
+            color: white; /* White text color */
+            padding: 10px 20px; /* Add padding to the button */
+            border: none; /* Remove button border */
+            border-radius: 5px; /* Add border radius to the button */
+            font-size: 16px; /* Adjust font size as needed */
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+        textarea {
+            width: 100%; /* Set the width of the textarea to 100% of the container */
+            border: none; /* Remove the textarea border */
+            padding: 10px; /* Add padding for a better appearance */
+            font-size: 16px; /* Adjust font size as needed */
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 if submit_button:  # Mengeksekusi kode ini hanya jika tombol "Submit" ditekan
     if user_input.lower() != 'exit':
@@ -148,4 +172,3 @@ if total_responses > 0:
 # Tampilkan dataframe feedback di paling atas
 st.header("Feedback Responses")
 st.table(feedback_data)
-
