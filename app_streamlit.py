@@ -105,37 +105,6 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
 # Streamlit UI
 st.title("CIT-Knowledge Management Chatbot")
 
-# Get user input with wider input box and the same prompt as before
-user_input = st.text_area("Enter your question (type 'exit' to exit):", key='user_input')
-st.markdown(
-    """
-    <style>
-        .input-container {
-            position: relative;
-        }
-        textarea {
-            width: 100%; /* Set the width of the textarea to 100% of the container */
-            border: none; /* Remove the textarea border */
-            padding: 10px; /* Add padding for a better appearance */
-            font-size: 16px; /* Adjust font size as needed */
-        }
-        .submit-button-container {
-            display: flex;
-            justify-content: flex-end;
-        }
-        [data-testid="stButton_submit_button"] {
-            background-color: #4CAF50; /* Green background color */
-            color: white; /* White text color */
-            padding: 10px 20px; /* Add padding to the button */
-            border: none; /* Remove button border */
-            border-radius: 5px; /* Add border radius to the button */
-            font-size: 16px; /* Adjust font size as needed */
-        }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
 # Initialize a variable to track whether to display the custom warning
 display_custom_warning = False
 
@@ -176,3 +145,4 @@ if display_custom_warning:
         """,
         unsafe_allow_html=True
     )
+
