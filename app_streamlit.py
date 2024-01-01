@@ -99,8 +99,14 @@ st.markdown(
 # Streamlit UI
 st.title("CIT-Knowledge Management Chatbot")
 
+# Tombol Home
+if st.button("Home"):
+    st.text_input("Enter your question (type 'exit' to exit):", key="user_input")  # Reset user input
+    if 'asked_detail_question' in st.session_state:
+        del st.session_state.asked_detail_question  # Reset flag for detail question
+
 # Gantilah bagian while loop seperti di bawah agar sesuai dengan pola penggunaan Streamlit yang benar
-user_input = st.text_input("Enter your question (type 'exit' to exit):")
+user_input = st.text_input("Enter your question (type 'exit' to exit):", key="user_input")
 if user_input.lower() != 'exit':
     response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
     if response_options:
