@@ -8,6 +8,30 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+# Set background color
+st.markdown(
+    """
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+        .custom-warning {
+            background-color: #4CAF50;  /* Green background color */
+            color: white; /* White text color */
+            padding: 10px; /* Add some padding */
+            margin: 10px 0; /* Add some margin */
+        }
+        .response-box {
+            border-radius: 15px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# Load data
 logo_path = 'logokalbe.png'
 st.image(logo_path, width=200)
 df = pd.read_excel('Laptop tidak dapat terhubung ke Wi-Fi.xlsx')
@@ -60,7 +84,7 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
         if 'asked_detail_question' not in st.session_state:
             # Set flag to indicate that the detail question has been asked
             st.session_state.asked_detail_question = True
-            # Tambahkan argumen key yang unik
+            # Ask for more details
             detail_question = st.text_area("To provide a more accurate answer, please provide details of your question or issue:")
             user_input += " " + detail_question
             return generate_response_tfidf_with_probability_and_detail(user_input, df)
@@ -71,57 +95,31 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
             response_options = [(df['answer'].iloc[index], similarities[index]) for index in top_k_indices if index < len(df)]
             return response_options
         else:
-            # Tambahkan argumen key yang unik
-            user_input = st.text_area(f"Probabilitas jawaban tertinggi saat ini kurang dari {threshold_probability*100}%. Berikan lebih banyak detail pertanyaan atau masalah Anda:")
+            # Ask for more details
+            user_input = st.text_area(f"Probability of the current answer is less than {threshold_probability*100}%. Please provide more details:")
             return generate_response_tfidf_with_probability_and_detail(user_input, df)
-
-# Set background color
-st.markdown(
-    """
-    <style>
-        body {
-            background-color: #ffffff;
-        }
-        .custom-warning {
-            background-color: #4CAF50;  /* Green background color */
-            color: white; /* White text color */
-            padding: 10px; /* Add some padding */
-            margin: 10px 0; /* Add some margin */
-        }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-
-# ...
 
 # Streamlit UI
 st.title("CIT-Knowledge Management Chatbot")
 
-# Gantilah bagian while loop seperti di bawah agar sesuai dengan pola penggunaan Streamlit yang benar
+# Get user input
 user_input = st.text_input("Enter your question (type 'exit' to exit):")
 if user_input.lower() != 'exit':
     response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
     if response_options:
         for i, (response, probability) in enumerate(response_options, start=1):
-            # Hitung gradasi warna sesuai dengan probabilitas
+            # Define response box color based on probability
             if probability >= 0.8:
-                color = "#ADFF2F"  # Hijau
+                color = "#ADFF2F"  # Green
             elif probability >= 0.5:
-                color = "#FFD700"  # Kuning
+                color = "#FFD700"  # Yellow
             else:
-                color = "#F08080"  # Merah
-            
-            # Tambahkan CSS untuk style kotak dengan gradasi warna yang lebih lembut (pastel)
+                color = "#F08080"  # Red
+
+            # Display response with colored box
             st.markdown(
                 f"""
-                <div style="
-                    border-radius: 15px;
-                    background-color: {color};
-                    padding: 10px;
-                    margin: 10px 0;
-                ">
+                <div class="response-box" style="background-color: {color};">
                     Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}
                 </div>
                 """,
