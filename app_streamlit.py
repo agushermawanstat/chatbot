@@ -117,7 +117,7 @@ if user_input.lower() != 'exit':
             st.markdown(
                 f"""
                 <style>
-                    .feedback-box {{
+                    .feedback-box-{i} {{
                         background: {color};
                         border-radius: 10px;
                         padding: 10px;
@@ -127,8 +127,8 @@ if user_input.lower() != 'exit':
                 """
             )
             
-            # Tambahkan slider untuk rating bintang
-            rating = st.slider("Rate the response (1 to 5 stars):", min_value=1, max_value=5, step=1)
+            # Tambahkan slider untuk rating bintang dengan menggunakan argumen key yang unik
+            rating = st.slider(f"Rate the response (1 to 5 stars):", min_value=1, max_value=5, step=1, key=f"rating_{i}")
             
             # Tambahkan data feedback ke dalam DataFrame
             feedback_data = pd.DataFrame({
@@ -138,8 +138,10 @@ if user_input.lower() != 'exit':
             })
             
             # Tampilkan hasil feedback
+            st.markdown(f'<div class="feedback-box-{i}">')
             st.write(f"Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}")
             st.write(f"Rating: {rating} stars")
+            st.markdown('</div>')
             
             # Tambahkan feedback_data ke dalam DataFrame utama
             df = pd.concat([df, feedback_data], ignore_index=True)
