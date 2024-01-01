@@ -56,7 +56,7 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
             # Set flag to indicate that the detail question has been asked
             st.session_state.asked_detail_question = True
             # Tambahkan argumen key yang unik
-            detail_question = st.text_area("Saya perlu informasi lebih detail untuk memberikan jawaban yang lebih akurat. Mohon berikan detail pertanyaan atau masalah Anda:", key="detail_area_" + str(hash(user_input)))
+            detail_question = st.text_area("To provide a more accurate answer, please provide details of your question or issue:", key="detail_area_" + str(hash(user_input)))
             user_input += " " + detail_question
             return generate_response_tfidf_with_probability_and_detail(user_input, df)
     else:
