@@ -121,8 +121,11 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# Initialize a variable to track whether to display the custom warning
+display_custom_warning = False
+
 # Add a Submit button with a green background
-if st.button("Submit", key='submit_button', class_="submit-button"):
+if st.button("Submit", key='submit_button'):
     if user_input.lower() != 'exit':
         response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
         if response_options:
@@ -144,3 +147,17 @@ if st.button("Submit", key='submit_button', class_="submit-button"):
                     """,
                     unsafe_allow_html=True
                 )
+        else:
+            # Set the variable to display the custom warning
+            display_custom_warning = True
+
+# Display the custom warning if the variable is set to True
+if display_custom_warning:
+    st.markdown(
+        """
+        <div class="custom-warning">
+            Kindly provide a comprehensive and detailed description of the issue you are facing, and I will offer the solution as accurately as possible!
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
