@@ -11,12 +11,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 logo_path = 'logokalbe.png'
 st.image(logo_path, use_column_width=True)
-st.set_page_config(
-    page_title="Chatbot Teknis",
-    page_icon="🤖",
-    layout="wide",  # Use "wide" layout
-    initial_sidebar_state="collapsed",  # Collapsed sidebar by default
-)
 
 df = pd.read_excel('Laptop tidak dapat terhubung ke Wi-Fi.xlsx')
 
