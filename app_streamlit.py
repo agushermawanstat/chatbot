@@ -118,7 +118,8 @@ if user_input.lower() != 'exit':
             # Tambahkan CSS untuk style kotak dengan gradasi warna yang lebih lembut (pastel)
             expander_id = f"expander_{i}"  # ID unik untuk setiap expander
             with st.expander(f"Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}", expanded=False):
-                satisfaction_rating = st.selectbox("Pilih tingkat kepuasan:", ["Puas", "Netral", "Tidak Puas"])
+                # Gunakan widget `key` untuk mencegah DuplicateWidgetID
+                satisfaction_rating = st.selectbox("Pilih tingkat kepuasan:", ["Puas", "Netral", "Tidak Puas"], key=f"satisfaction_{i}")
                 if satisfaction_rating:
                     satisfaction_count += 1
                     satisfaction_ratings.append(satisfaction_rating)
