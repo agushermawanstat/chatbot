@@ -155,4 +155,4 @@ if user_input.lower() != 'exit':
         )
 # Tampilkan DataFrame feedback
 st.subheader("Feedback Data")
-st.dataframe(df)
+#st.dataframe(df)
