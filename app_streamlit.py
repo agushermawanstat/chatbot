@@ -15,30 +15,16 @@ st.markdown(
         body {
             background-color: #ffffff;
         }
+        .custom-warning {
+            background-color: #4CAF50;  /* Green background color */
+            color: white; /* White text color */
+            padding: 10px; /* Add some padding */
+            margin: 10px 0; /* Add some margin */
+        }
         .response-box {
             border-radius: 15px;
             padding: 10px;
             margin: 10px 0;
-        }
-        .input-container {
-            position: relative;
-        }
-        .submit-button {
-            background-color: #4CAF50; /* Green background color */
-            color: white; /* White text color */
-            padding: 10px 20px; /* Add padding to the button */
-            border: none; /* Remove button border */
-            border-radius: 5px; /* Add border radius to the button */
-            font-size: 16px; /* Adjust font size as needed */
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-        }
-        textarea {
-            width: 100%; /* Set the width of the textarea to 100% of the container */
-            border: none; /* Remove the textarea border */
-            padding: 10px; /* Add padding for a better appearance */
-            font-size: 16px; /* Adjust font size as needed */
         }
     </style>
     """,
@@ -100,16 +86,54 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
         return response_options
     else:
         # Custom warning message
-        st.warning("Kindly provide a comprehensive and detailed description of the issue you are facing, and I will offer the solution as accurately as possible!")
+        st.markdown(
+            """
+            <div class="custom-warning">
+                Kindly provide a comprehensive and detailed description of the issue you are facing, and I will offer the solution as accurately as possible!
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
 # Streamlit UI
 st.title("CIT-Knowledge Management Chatbot")
+
+# Get user input with wider input box and the same prompt as before
+user_input = st.text_area("Enter your question (type 'exit' to exit):", key='user_input')
+st.markdown(
+    """
+    <style>
+        .input-container {
+            position: relative;
+        }
+        textarea {
+            width: 100%; /* Set the width of the textarea to 100% of the container */
+            border: none; /* Remove the textarea border */
+            padding: 10px; /* Add padding for a better appearance */
+            font-size: 16px; /* Adjust font size as needed */
+        }
+        .submit-button-container {
+            display: flex;
+            justify-content: flex-end;
+        }
+        [data-testid="stButton_submit_button"] {
+            background-color: #4CAF50; /* Green background color */
+            color: white; /* White text color */
+            padding: 10px 20px; /* Add padding to the button */
+            border: none; /* Remove button border */
+            border-radius: 5px; /* Add border radius to the button */
+            font-size: 16px; /* Adjust font size as needed */
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # Initialize a variable to track whether to display the custom warning
 display_custom_warning = False
 
 # Add a Submit button with a green background
-if st.button("Submit", key='submit_button'):
+if st.button("Submit", key='submit_button', key='submit_button'):
     if user_input.lower() != 'exit':
         response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
         if response_options:
@@ -145,4 +169,3 @@ if display_custom_warning:
         """,
         unsafe_allow_html=True
     )
-
