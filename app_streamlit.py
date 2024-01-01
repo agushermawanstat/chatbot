@@ -9,8 +9,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+# Display company logo with specified width
 logo_path = 'path/to/your/logo.png'  # Replace with the actual path to your logo file
 st.image(logo_path, width=200)  # Adjust the width as needed
+
+# Load data
 df = pd.read_excel('Laptop tidak dapat terhubung ke Wi-Fi.xlsx')
 
 # Train LSTM model
@@ -70,7 +73,7 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
             return generate_response_tfidf_with_probability_and_detail(user_input, df)
 
 # Streamlit UI
-st.title("CIT-Knowledge Management Chatbot")
+st.title("Chatbot Teknis")
 
 # Gantilah bagian while loop seperti di bawah agar sesuai dengan pola penggunaan Streamlit yang benar
 user_input = st.text_input("Masukkan pertanyaan Anda (ketik 'exit' untuk keluar):")
