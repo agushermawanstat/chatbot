@@ -155,12 +155,6 @@ if user_input.lower() != 'exit':
         )
 # ...
 
-# ...
-
-# Tambahkan kolom 'Feedback' ke DataFrame jika belum ada
-if 'Feedback' not in df.columns:
-    df['Feedback'] = ''
-
 # Visualisasikan persentase kepuasan
 if not df.empty:
     st.subheader("Satisfaction Percentage")
@@ -168,11 +162,12 @@ if not df.empty:
     positive_feedback_percentage = (df[df["Feedback"] == "👍"].shape[0] / df.shape[0]) * 100
     negative_feedback_percentage = (df[df["Feedback"] == "👎"].shape[0] / df.shape[0]) * 100
 
-    st.progress(positive_feedback_percentage, label="Positive Feedback")
-    st.progress(negative_feedback_percentage, label="Negative Feedback")
+    st.progress(positive_feedback_percentage)
+    st.write(f"Positive Feedback: {positive_feedback_percentage:.2f}%")
+
+    st.progress(negative_feedback_percentage)
+    st.write(f"Negative Feedback: {negative_feedback_percentage:.2f}%")
 
     st.subheader("Number of Respondents")
     st.write(f"Positive Feedback Respondents: {df[df['Feedback'] == '👍'].shape[0]}")
     st.write(f"Negative Feedback Respondents: {df[df['Feedback'] == '👎'].shape[0]}")
-
-
