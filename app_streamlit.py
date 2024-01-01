@@ -50,7 +50,7 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
         similarities = cosine_similarity(user_vector, tfidf_matrix).flatten()
 
         if len(similarities) == 0 or len(similarities) < top_k or all(similarity == 0 for similarity in similarities):
-            detail_question = st.text_input("Saya perlu informasi lebih detail untuk memberikan jawaban yang lebih akurat. Mohon berikan detail pertanyaan atau masalah Anda:")
+            detail_question = st.text_area("Saya perlu informasi lebih detail untuk memberikan jawaban yang lebih akurat. Mohon berikan detail pertanyaan atau masalah Anda:")
             user_input += " " + detail_question
         else:
             max_probability = max(similarities)
@@ -59,7 +59,7 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
                 response_options = [(df['answer'].iloc[index], similarities[index]) for index in top_k_indices if index < len(df)]
                 return response_options
             else:
-                user_input = st.text_input(f"Probabilitas jawaban tertinggi saat ini kurang dari {threshold_probability*100}%. Berikan lebih banyak detail pertanyaan atau masalah Anda:")
+                user_input = st.text_area(f"Probabilitas jawaban tertinggi saat ini kurang dari {threshold_probability*100}%. Berikan lebih banyak detail pertanyaan atau masalah Anda:")
 
 # Streamlit UI
 st.title("Chatbot Teknis")
