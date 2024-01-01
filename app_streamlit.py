@@ -45,23 +45,24 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
     corpus = df['question'].tolist() + df['answer'].tolist()
     tfidf_matrix = vectorizer.fit_transform(corpus)
 
-    while True:
-        user_vector = vectorizer.transform([user_input])
-        similarities = cosine_similarity(user_vector, tfidf_matrix).flatten()
+    user_vector = vectorizer.transform([user_input])
+    similarities = cosine_similarity(user_vector, tfidf_matrix).flatten()
 
-        if len(similarities) == 0 or len(similarities) < top_k or all(similarity == 0 for similarity in similarities):
-            # Tambahkan argumen key yang unik
-            detail_question = st.text_area("Saya perlu informasi lebih detail untuk memberikan jawaban yang lebih akurat. Mohon berikan detail pertanyaan atau masalah Anda:", key="detail_area_" + str(hash(user_input)))
-            user_input += " " + detail_question
+    if len(similarities) == 0 or len(similarities) < top_k or all(similarity == 0 for similarity in similarities):
+        # Tambahkan argumen key yang unik
+        detail_question = st.text_area("Saya perlu informasi lebih detail untuk memberikan jawaban yang lebih akurat. Mohon berikan detail pertanyaan atau masalah Anda:", key="detail_area_" + str(hash(user_input)))
+        user_input += " " + detail_question
+        return generate_response_tfidf_with_probability_and_detail(user_input, df)
+    else:
+        max_probability = max(similarities)
+        if max_probability >= threshold_probability:
+            top_k_indices = np.argsort(similarities)[-min(top_k, len(similarities)):][::-1]
+            response_options = [(df['answer'].iloc[index], similarities[index]) for index in top_k_indices if index < len(df)]
+            return response_options
         else:
-            max_probability = max(similarities)
-            if max_probability >= threshold_probability:
-                top_k_indices = np.argsort(similarities)[-min(top_k, len(similarities)):][::-1]
-                response_options = [(df['answer'].iloc[index], similarities[index]) for index in top_k_indices if index < len(df)]
-                return response_options
-            else:
-                # Tambahkan argumen key yang unik
-                user_input = st.text_area(f"Probabilitas jawaban tertinggi saat ini kurang dari {threshold_probability*100}%. Berikan lebih banyak detail pertanyaan atau masalah Anda:", key="prob_area")
+            # Tambahkan argumen key yang unik
+            user_input = st.text_area(f"Probabilitas jawaban tertinggi saat ini kurang dari {threshold_probability*100}%. Berikan lebih banyak detail pertanyaan atau masalah Anda:", key="prob_area")
+            return generate_response_tfidf_with_probability_and_detail(user_input, df)
 
 # Streamlit UI
 st.title("Chatbot Teknis")
