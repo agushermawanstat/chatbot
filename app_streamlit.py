@@ -26,6 +26,26 @@ st.markdown(
             padding: 10px;
             margin: 10px 0;
         }
+        .input-container {
+            position: relative;
+        }
+        .submit-button {
+            background-color: #4CAF50; /* Green background color */
+            color: white; /* White text color */
+            padding: 10px 20px; /* Add padding to the button */
+            border: none; /* Remove button border */
+            border-radius: 5px; /* Add border radius to the button */
+            font-size: 16px; /* Adjust font size as needed */
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+        textarea {
+            width: 100%; /* Set the width of the textarea to 100% of the container */
+            border: none; /* Remove the textarea border */
+            padding: 10px; /* Add padding for a better appearance */
+            font-size: 16px; /* Adjust font size as needed */
+        }
     </style>
     """,
     unsafe_allow_html=True
@@ -107,14 +127,6 @@ st.markdown(
             width: 100%; /* Set the width of the textarea to 100% of the container */
             border: none; /* Remove the textarea border */
             padding: 10px; /* Add padding for a better appearance */
-            font-size: 16px; /* Adjust font size as needed */
-        }
-        .submit-button {
-            background-color: #4CAF50; /* Green background color */
-            color: white; /* White text color */
-            padding: 10px 20px; /* Add padding to the button */
-            border: none; /* Remove button border */
-            border-radius: 5px; /* Add border radius to the button */
             font-size: 16px; /* Adjust font size as needed */
         }
     </style>
