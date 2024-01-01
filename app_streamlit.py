@@ -93,6 +93,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+
 # Streamlit UI
 st.title("CIT-Knowledge Management Chatbot")
 
@@ -102,10 +103,10 @@ if user_input.lower() != 'exit':
     response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
     if response_options:
         for i, (response, probability) in enumerate(response_options, start=1):
-            # Tentukan warna latar belakang dengan transparansi 50%
-            color = f"rgba({255 - int(min(2 * probability, 1) * 255)}, {int(min(2 * probability, 1) * 255)}, 0, 0.2)"
+            # Tentukan warna latar belakang dengan gradasi warna lebih lembut
+            color = f"rgba({255 - int(min(2 * probability, 1) * 255)}, {int(min(2 * probability, 1) * 255)}, 0, 1)"
             
-            # Tambahkan CSS untuk style kotak dengan gradasi warna dan transparansi
+            # Tambahkan CSS untuk style kotak dengan gradasi warna yang lebih lembut
             st.markdown(
                 f"""
                 <div style="
