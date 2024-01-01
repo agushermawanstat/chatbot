@@ -103,7 +103,7 @@ if user_input.lower() != 'exit':
     if response_options:
         for i, (response, probability) in enumerate(response_options, start=1):
             # Tentukan warna latar belakang dengan transparansi 50%
-            color = f"rgba({255 - int(min(2 * probability, 1) * 255)}, {int(min(2 * probability, 1) * 255)}, 0, 0.8)"
+            color = f"rgba({255 - int(min(2 * probability, 1) * 255)}, {int(min(2 * probability, 1) * 255)}, 0, 0.2)"
             
             # Tambahkan CSS untuk style kotak dengan gradasi warna dan transparansi
             st.markdown(
