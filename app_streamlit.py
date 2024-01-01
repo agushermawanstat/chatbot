@@ -102,7 +102,10 @@ st.title("CIT-Knowledge Management Chatbot")
 
 # Get user input with wider input box and the same prompt as before
 user_input = st.text_area("Enter your question (type 'exit' to exit):", key='user_input')
-submit_button = st.button("Submit", key='submit_button')  # Tombol "Submit"
+if user_input.lower() == 'exit':
+    submit_button = st.button("Reset", key='reset_button')  # Jika pengguna ingin keluar, ganti label tombol menjadi "Reset"
+else:
+    submit_button = st.button("Submit", key='submit_button')  # Jika tidak, gunakan label "Submit" biasa
 
 st.markdown(
     """
