@@ -116,17 +116,33 @@ if user_input.lower() != 'exit':
             # Tambahkan CSS untuk style kotak dengan gradasi warna yang lebih lembut (pastel)
             st.markdown(
                 f"""
-                <div style="
-                    border-radius: 15px;
-                    background-color: {color};
-                    padding: 10px;
-                    margin: 10px 0;
-                ">
-                    Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}
-                </div>
-                """,
-                unsafe_allow_html=True
+                <style>
+                    .feedback-box {{
+                        background: {color};
+                        border-radius: 10px;
+                        padding: 10px;
+                        margin: 10px 0;
+                    }}
+                </style>
+                """
             )
+            
+            # Tambahkan slider untuk rating bintang
+            rating = st.slider("Rate the response (1 to 5 stars):", min_value=1, max_value=5, step=1)
+            
+            # Tambahkan data feedback ke dalam DataFrame
+            feedback_data = pd.DataFrame({
+                "Response": [response],
+                "Probability": [probability],
+                "Rating": [rating]
+            })
+            
+            # Tampilkan hasil feedback
+            st.write(f"Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}")
+            st.write(f"Rating: {rating} stars")
+            
+            # Tambahkan feedback_data ke dalam DataFrame utama
+            df = pd.concat([df, feedback_data], ignore_index=True)
     else:
         # Custom warning message
         st.markdown(
