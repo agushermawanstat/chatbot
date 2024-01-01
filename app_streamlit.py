@@ -116,6 +116,20 @@ st.markdown(
             padding: 10px; /* Add padding for a better appearance */
             font-size: 16px; /* Adjust font size as needed */
         }
+        .submit-button-container {
+            position: relative;
+        }
+        .submit-button {
+            background-color: #4CAF50; /* Green background color */
+            color: white; /* White text color */
+            padding: 10px 20px; /* Add padding to the button */
+            border: none; /* Remove button border */
+            border-radius: 5px; /* Add border radius to the button */
+            font-size: 16px; /* Adjust font size as needed */
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
     </style>
     """,
     unsafe_allow_html=True
@@ -125,7 +139,7 @@ st.markdown(
 display_custom_warning = False
 
 # Add a Submit button with a green background
-if st.button("Submit", key='submit_button'):
+if st.button("Submit", key='submit_button', class_='submit-button'):
     if user_input.lower() != 'exit':
         response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
         if response_options:
