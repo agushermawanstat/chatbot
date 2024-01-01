@@ -129,12 +129,6 @@ st.markdown(
 )
 
 if user_input.lower() != 'exit':
-    # Wrap the input and submit button in a container div
-    input_container = st.container()
-    with input_container:
-        # Add the Submit button with green background and white text
-        st.button("Submit", key='submit_button', class_="submit-button")
-    
     response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
     if response_options:
         for i, (response, probability) in enumerate(response_options, start=1):
