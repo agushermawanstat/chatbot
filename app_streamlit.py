@@ -9,7 +9,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 # Load data
-df = pd.read_excel(r'D:\Kalbe\AI-Incident Diagnose\Laptop tidak dapat terhubung ke Wi-Fi.xlsx')
+df = pd.read_excel('Laptop tidak dapat terhubung ke Wi-Fi.xlsx')
 
 # Train LSTM model
 train_data = df["question"].tolist() + df["answer"].tolist()
