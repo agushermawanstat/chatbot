@@ -100,7 +100,10 @@ st.title("CIT-Knowledge Management Chatbot")
 
 # Get user input with wider input box and the same prompt as before
 user_input = st.text_area("Enter your question (type 'exit' to exit):", key='user_input')
-submit_button = st.button("Submit")  # Tambahkan tombol "Submit"
+if user_input.lower() == 'exit':
+    submit_button = st.button("Reset")  # Jika pengguna ingin keluar, ganti label tombol menjadi "Reset"
+else:
+    submit_button = st.button("Submit")  # Jika tidak, gunakan label "Submit" biasa
 
 st.markdown(
     """
@@ -130,8 +133,10 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-if submit_button:  # Mengeksekusi kode ini hanya jika tombol "Submit" ditekan
-    if user_input.lower() != 'exit':
+if submit_button:  # Mengeksekusi kode ini hanya jika tombol "Submit" atau "Reset" ditekan
+    if user_input.lower() == 'exit':
+        st.text("You have exited the chat.")  # Menampilkan pesan ketika pengguna keluar
+    else:
         response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
         if response_options:
             for i, (response, probability) in enumerate(response_options, start=1):
