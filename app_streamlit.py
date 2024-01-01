@@ -125,6 +125,10 @@ if user_input.lower() != 'exit':
                 """,
                 unsafe_allow_html=True
             )
+        
+        # Add a reset button to return to 'exit' mode
+        if st.button("Reset"):
+            user_input = 'exit'  # Reset the user_input to exit mode
     else:
         # Custom warning message
         st.markdown(
