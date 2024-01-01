@@ -104,9 +104,13 @@ st.markdown(
 # Streamlit UI
 st.title("CIT-Knowledge Management Chatbot")
 
-# Gantilah bagian while loop seperti di bawah agar sesuai dengan pola penggunaan Streamlit yang benar
-user_input = st.text_input("Enter your question (type 'exit' to exit):")
-if user_input.lower() != 'exit':
+# Loop untuk menerima pertanyaan dari pengguna
+while True:
+    # Gantilah bagian while loop seperti di bawah agar sesuai dengan pola penggunaan Streamlit yang benar
+    user_input = st.text_input("Enter your question (type 'exit' to exit):")
+    if user_input.lower() == 'exit':
+        break
+    
     response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
     if response_options:
         for i, (response, probability) in enumerate(response_options, start=1):
@@ -126,9 +130,6 @@ if user_input.lower() != 'exit':
                 if satisfaction_rating:
                     satisfaction_count += 1
                     satisfaction_ratings.append(satisfaction_rating)
-else:
-    # Untuk mengakhiri aplikasi
-    st.warning("Aplikasi telah ditutup.")
 
 # Tampilkan visualisasi tingkat kepuasan dan jumlah respons
 st.header("Feedback & Satisfaction Report")
