@@ -102,10 +102,7 @@ st.title("CIT-Knowledge Management Chatbot")
 
 # Get user input with wider input box and the same prompt as before
 user_input = st.text_area("Enter your question (type 'exit' to exit):", key='user_input')
-if user_input.lower() == 'exit':
-    submit_button = st.button("Reset", key='reset_button')  # Jika pengguna ingin keluar, ganti label tombol menjadi "Reset"
-else:
-    submit_button = st.button("Submit", key='submit_button')  # Jika tidak, gunakan label "Submit" biasa
+submit_button = st.button("Submit", key='submit_button')  # Tombol "Submit"
 
 st.markdown(
     """
@@ -135,6 +132,12 @@ st.markdown(
             bottom: 10px;
             right: 150px; /* Adjust the position of the Reset button */
         }
+        .custom-warning {
+            background-color: #4CAF50;  /* Green background color */
+            color: white; /* White text color */
+            padding: 10px; /* Add some padding */
+            margin-top: 10px; /* Add margin to push it below the input box */
+        }
         textarea {
             width: 100%; /* Set the width of the textarea to 100% of the container */
             border: none; /* Remove the textarea border */
@@ -150,23 +153,34 @@ if submit_button:  # Mengeksekusi kode ini hanya jika tombol "Submit" atau "Rese
     if user_input.lower() == 'exit':
         st.text("You have exited the chat.")  # Menampilkan pesan ketika pengguna keluar
     else:
-        response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
-        if response_options:
-            for i, (response, probability) in enumerate(response_options, start=1):
-                # Define response box color based on probability
-                if probability >= 0.8:
-                    color = "#ADFF2F"  # Green
-                elif probability >= 0.5:
-                    color = "#FFD700"  # Yellow
-                else:
-                    color = "#F08080"  # Red
+        if not user_input.strip():
+            # Custom warning message if the user input is empty
+            st.markdown(
+                """
+                <div class="custom-warning">
+                    Please enter a question or description before submitting.
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+        else:
+            response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
+            if response_options:
+                for i, (response, probability) in enumerate(response_options, start=1):
+                    # Define response box color based on probability
+                    if probability >= 0.8:
+                        color = "#ADFF2F"  # Green
+                    elif probability >= 0.5:
+                        color = "#FFD700"  # Yellow
+                    else:
+                        color = "#F08080"  # Red
 
-                # Display response with colored box
-                st.markdown(
-                    f"""
-                    <div class="response-box" style="background-color: {color};">
-                        Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+                    # Display response with colored box
+                    st.markdown(
+                        f"""
+                        <div class="response-box" style="background-color: {color};">
+                            Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
