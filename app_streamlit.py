@@ -99,7 +99,7 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
 st.title("CIT-Knowledge Management Chatbot")
 
 # Get user input with wider input box and the same prompt as before
-user_input = st.text_area("To provide a more accurate answer, please provide details of your question or issue (type 'exit' to exit):", key='user_input')
+user_input = st.text_area("Enter your question (type 'exit' to exit):", key='user_input')
 st.markdown(
     """
     <style>
