@@ -36,6 +36,10 @@ logo_path = 'logokalbe.png'
 st.image(logo_path, width=200)
 df = pd.read_excel('Laptop tidak dapat terhubung ke Wi-Fi.xlsx')
 
+# Inisialisasi variabel total_responses dan total_rating
+total_responses = 0
+total_rating = 0
+
 # Train LSTM model (Let's use st.cache for caching the model)
 @st.cache(allow_output_mutation=True)
 def train_lstm_model():
