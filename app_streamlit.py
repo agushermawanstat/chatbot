@@ -105,14 +105,15 @@ if user_input.lower() != 'exit':
     response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
     if response_options:
         for i, (response, probability) in enumerate(response_options, start=1):
-            # Hitung gradasi warna lebih lembut
-            red_value = int(min(255, 255 * probability))
-            green_value = int(min(255, 255 * (1 - probability)))
-
-            # Tentukan warna latar belakang dengan gradasi warna lebih lembut
-            color = f"rgb({red_value}, {green_value}, 0)"
+            # Hitung gradasi warna sesuai dengan probabilitas
+            if probability >= 0.8:
+                color = "#ADFF2F"  # Hijau
+            elif probability >= 0.5:
+                color = "#FFD700"  # Kuning
+            else:
+                color = "#F08080"  # Merah
             
-            # Tambahkan CSS untuk style kotak dengan gradasi warna yang lebih lembut
+            # Tambahkan CSS untuk style kotak dengan gradasi warna yang lebih lembut (pastel)
             st.markdown(
                 f"""
                 <div style="
