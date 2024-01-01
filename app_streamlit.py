@@ -70,6 +70,22 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
             user_input = st.text_area(f"Probabilitas jawaban tertinggi saat ini kurang dari {threshold_probability*100}%. Berikan lebih banyak detail pertanyaan atau masalah Anda:", key="prob_area")
             return generate_response_tfidf_with_probability_and_detail(user_input, df)
 
+st.markdown(
+    """
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+        .custom-warning {
+            background-color: #4CAF50;  /* Green background color */
+            color: white; /* White text color */
+            padding: 10px; /* Add some padding */
+            margin: 10px 0; /* Add some margin */
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 # Streamlit UI
 st.title("Chatbot Teknis")
 
