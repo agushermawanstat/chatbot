@@ -36,13 +36,6 @@ logo_path = 'logokalbe.png'
 st.image(logo_path, width=200)
 df = pd.read_excel('Laptop tidak dapat terhubung ke Wi-Fi.xlsx')
 
-# Inisialisasi variabel total_responses dan total_rating
-total_responses = 0
-total_rating = 0
-
-# Inisialisasi dataframe untuk feedback
-feedback_data = pd.DataFrame(columns=["Response", "Rating"])
-
 # Train LSTM model (Let's use st.cache for caching the model)
 @st.cache(allow_output_mutation=True)
 def train_lstm_model():
@@ -102,6 +95,8 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
             unsafe_allow_html=True
         )
 
+import streamlit as st
+
 # Streamlit UI
 st.title("CIT-Knowledge Management Chatbot")
 
@@ -159,16 +154,3 @@ if submit_button:  # Mengeksekusi kode ini hanya jika tombol "Submit" ditekan
                     """,
                     unsafe_allow_html=True
                 )
-                # Tambahkan respons ke dataframe feedback
-                new_data = pd.DataFrame({"Response": [response], "Rating": [None]})
-                feedback_data = pd.concat([new_data, feedback_data], ignore_index=True)
-
-# Di akhir respons, tampilkan total rating dan persentase ratingnya
-if total_responses > 0:
-    average_rating = total_rating / total_responses
-    st.write(f"Total Responses: {total_responses}")
-    st.write(f"Average Rating: {average_rating:.2f}%")
-
-# Tampilkan dataframe feedback di paling atas
-st.header("Feedback Responses")
-st.table(feedback_data)
