@@ -93,6 +93,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+
 # ...
 
 # Streamlit UI
@@ -111,7 +112,7 @@ if user_input.lower() != 'exit':
                 color = "#FFD700"  # Kuning
             else:
                 color = "#F08080"  # Merah
-
+            
             # Tambahkan CSS untuk style kotak dengan gradasi warna yang lebih lembut (pastel)
             st.markdown(
                 f"""
@@ -126,23 +127,6 @@ if user_input.lower() != 'exit':
                 """,
                 unsafe_allow_html=True
             )
-
-            # Tampilkan widget feedback/rating
-            feedback = st.selectbox(f"Feedback for Option {i}:", ["", "👍 Positive", "👎 Negative"])
-            if feedback:
-                # Hitung persentase rating
-                rating_percentage = 100 if "👍" in feedback else 0
-
-                # Tambahkan data feedback ke DataFrame
-                feedback_data = {
-                    "Response": response,
-                    "Probability": probability,
-                    "Feedback": feedback,
-                    "Rating Percentage": rating_percentage
-                }
-                df_feedback = pd.DataFrame([feedback_data])
-                df = pd.concat([df, df_feedback], ignore_index=True)
-
     else:
         # Custom warning message
         st.markdown(
@@ -153,25 +137,3 @@ if user_input.lower() != 'exit':
             """,
             unsafe_allow_html=True
         )
-st.subheader("Feedback Data")
-st.dataframe(df)
-
-# Visualisasikan persentase kepuasan
-if "Feedback" in df.columns:
-    st.subheader("Satisfaction Percentage")
-
-    positive_feedback_percentage = (df[df["Feedback"] == "👍"].shape[0] / df.shape[0]) * 100
-    negative_feedback_percentage = (df[df["Feedback"] == "👎"].shape[0] / df.shape[0]) * 100
-
-    st.progress(positive_feedback_percentage)
-    st.write(f"Positive Feedback: {positive_feedback_percentage:.2f}%")
-
-    st.progress(negative_feedback_percentage)
-    st.write(f"Negative Feedback: {negative_feedback_percentage:.2f}%")
-
-    st.subheader("Number of Respondents")
-    st.write(f"Positive Feedback Respondents: {df[df['Feedback'] == '👍'].shape[0]}")
-    st.write(f"Negative Feedback Respondents: {df[df['Feedback'] == '👎'].shape[0]}")
-else:
-    st.warning("DataFrame does not contain 'Feedback' column.")
-
