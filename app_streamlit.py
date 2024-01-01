@@ -79,25 +79,21 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
     user_vector = vectorizer.transform([user_input])
     similarities = cosine_similarity(user_vector, tfidf_matrix).flatten()
 
-    if len(similarities) == 0 or len(similarities) < top_k or all(similarity == 0 for similarity in similarities):
-        # Check if detail question has already been asked
-        if 'asked_detail_question' not in st.session_state:
-            # Set flag to indicate that the detail question has been asked
-            st.session_state.asked_detail_question = True
-            # Ask for more details
-            detail_question = st.text_area("To provide a more accurate answer, please provide details of your question or issue:")
-            user_input += " " + detail_question
-            return generate_response_tfidf_with_probability_and_detail(user_input, df)
+    max_probability = max(similarities)
+    if max_probability >= threshold_probability:
+        top_k_indices = np.argsort(similarities)[-min(top_k, len(similarities)):][::-1]
+        response_options = [(df['answer'].iloc[index], similarities[index]) for index in top_k_indices if index < len(df)]
+        return response_options
     else:
-        max_probability = max(similarities)
-        if max_probability >= threshold_probability:
-            top_k_indices = np.argsort(similarities)[-min(top_k, len(similarities)):][::-1]
-            response_options = [(df['answer'].iloc[index], similarities[index]) for index in top_k_indices if index < len(df)]
-            return response_options
-        else:
-            # Ask for more details
-            user_input = st.text_area(f"Probability of the current answer is less than {threshold_probability*100}%. Please provide more details:")
-            return generate_response_tfidf_with_probability_and_detail(user_input, df)
+        # Custom warning message
+        st.markdown(
+            """
+            <div class="custom-warning">
+                Kindly provide a comprehensive and detailed description of the issue you are facing, and I will offer the solution as accurately as possible!
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
 # Streamlit UI
 st.title("CIT-Knowledge Management Chatbot")
@@ -125,13 +121,3 @@ if user_input.lower() != 'exit':
                 """,
                 unsafe_allow_html=True
             )
-    else:
-        # Custom warning message
-        st.markdown(
-            """
-            <div class="custom-warning">
-                Kindly provide a comprehensive and detailed description of the issue you are facing, and I will offer the solution as accurately as possible!
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
