@@ -119,7 +119,7 @@ st.markdown(
             padding: 10px; /* Add padding for a better appearance */
             font-size: 16px; /* Adjust font size as needed */
         }
-        .submit-button {
+        [data-testid="stButton_submit_button"] {
             position: absolute;
             bottom: 0;
             right: 0;
@@ -139,7 +139,7 @@ st.markdown(
 display_custom_warning = False
 
 # Add a Submit button with a green background
-if st.button("Submit", key='submit_button', class_="submit-button"):
+if st.button("Submit", key='submit_button'):
     if user_input.lower() != 'exit':
         response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
         if response_options:
