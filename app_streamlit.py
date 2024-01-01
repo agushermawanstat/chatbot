@@ -103,7 +103,7 @@ st.title("CIT-Knowledge Management Chatbot")
 # Get user input with wider input box and the same prompt as before
 user_input = st.text_area("Enter your question (type 'exit' to exit):", key='user_input')
 if user_input.lower() == 'exit':
-    submit_button = st.button("Reset", key='reset_button')  # Jika pengguna ingin keluar, ganti label tombol menjadi "Reset"
+    submit_button = st.button("Exit", key='exit_button')  # Mengganti label tombol "Reset" menjadi "Exit"
 else:
     submit_button = st.button("Submit", key='submit_button')  # Jika tidak, gunakan label "Submit" biasa
 
@@ -124,17 +124,6 @@ st.markdown(
             bottom: 10px;
             right: 10px;
         }
-        .reset-button {
-            background-color: #F08080; /* Red background color */
-            color: white; /* White text color */
-            padding: 10px 20px; /* Add padding to the button */
-            border: none; /* Remove button border */
-            border-radius: 5px; /* Add border radius to the button */
-            font-size: 16px; /* Adjust font size as needed */
-            position: absolute;
-            bottom: 10px;
-            right: 150px; /* Adjust the position of the Reset button */
-        }
         .custom-warning {
             background-color: #4CAF50;  /* Green background color */
             color: white; /* White text color */
@@ -152,7 +141,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-if submit_button:  # Mengeksekusi kode ini hanya jika tombol "Submit" atau "Reset" ditekan
+if submit_button:  # Mengeksekusi kode ini hanya jika tombol "Submit" atau "Exit" ditekan
     if user_input.lower() == 'exit':
         st.text("You have exited the chat.")  # Menampilkan pesan ketika pengguna keluar
     else:
