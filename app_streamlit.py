@@ -128,7 +128,8 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-if user_input.lower() != 'exit':
+# Add the Submit button to send the question
+if st.button("Submit", key='submit_button', class_="submit-button"):
     response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
     if response_options:
         for i, (response, probability) in enumerate(response_options, start=1):
