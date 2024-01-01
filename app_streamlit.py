@@ -101,7 +101,6 @@ st.title("CIT-Knowledge Management Chatbot")
 
 # Tombol Home
 if st.button("Home"):
-    st.text_input("Enter your question (type 'exit' to exit):", key="user_input")  # Reset user input
     if 'asked_detail_question' in st.session_state:
         del st.session_state.asked_detail_question  # Reset flag for detail question
 
