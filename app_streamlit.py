@@ -156,3 +156,22 @@ if user_input.lower() != 'exit':
 # Tampilkan DataFrame feedback
 st.subheader("Feedback Data")
 #st.dataframe(df)
+# Tampilkan DataFrame feedback
+st.subheader("Feedback Data")
+st.dataframe(df)
+
+# Visualisasikan persentase kepuasan
+if not df.empty:
+    st.subheader("Satisfaction Percentage")
+    positive_feedback_percentage = (df[df["Feedback"] == "👍"].shape[0] / df.shape[0]) * 100
+    negative_feedback_percentage = (df[df["Feedback"] == "👎"].shape[0] / df.shape[0]) * 100
+
+    fig, ax = plt.subplots(figsize=(8, 5))
+    sns.barplot(x=["Positive", "Negative"], y=[positive_feedback_percentage, negative_feedback_percentage], ax=ax, palette="pastel")
+    ax.set_ylabel("Percentage")
+    ax.set_title("Feedback Satisfaction Percentage")
+    st.pyplot(fig)
+
+    st.subheader("Number of Respondents")
+    st.write(f"Positive Feedback Respondents: {df[df['Feedback'] == '👍'].shape[0]}")
+    st.write(f"Negative Feedback Respondents: {df[df['Feedback'] == '👎'].shape[0]}")
