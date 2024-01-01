@@ -102,7 +102,26 @@ if user_input.lower() != 'exit':
     response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
     if response_options:
         for i, (response, probability) in enumerate(response_options, start=1):
-            st.write(f"Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}")
+            # Tentukan warna latar belakang berdasarkan probabilitas
+            color = (
+                f"rgba({255 - int(min(2 * probability, 1) * 255)}, "
+                f"{int(min(2 * probability, 1) * 255)}, 0, 0.8)"
+            )
+            
+            # Tambahkan CSS untuk style kotak dengan gradasi warna
+            st.markdown(
+                f"""
+                <div style="
+                    border-radius: 15px;
+                    background: linear-gradient(to bottom, {color} 0%, {color} 100%);
+                    padding: 10px;
+                    margin: 10px 0;
+                ">
+                    Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
     else:
         # Custom warning message
         st.markdown(
