@@ -7,7 +7,6 @@ from tensorflow.keras.layers import Embedding, LSTM, Dense
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-import matplotlib.pyplot as plt
 
 logo_path = 'logokalbe.png'
 st.image(logo_path, width=200)
@@ -76,10 +75,6 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
             user_input = st.text_area(f"Probabilitas jawaban tertinggi saat ini kurang dari {threshold_probability*100}%. Berikan lebih banyak detail pertanyaan atau masalah Anda:")
             return generate_response_tfidf_with_probability_and_detail(user_input, df)
 
-# Inisialisasi variabel untuk melacak tingkat kepuasan dan jumlah respons
-satisfaction_count = 0
-satisfaction_ratings = []
-
 # Set background color
 st.markdown(
     """
@@ -97,6 +92,9 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
+
+# ...
 
 # Streamlit UI
 st.title("CIT-Knowledge Management Chatbot")
@@ -116,26 +114,26 @@ if user_input.lower() != 'exit':
                 color = "#F08080"  # Merah
             
             # Tambahkan CSS untuk style kotak dengan gradasi warna yang lebih lembut (pastel)
-            expander_id = f"expander_{i}"  # ID unik untuk setiap expander
-            with st.expander(f"Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}", expanded=False):
-                # Gunakan widget `key` untuk mencegah DuplicateWidgetID
-                satisfaction_rating = st.selectbox("Pilih tingkat kepuasan:", ["Puas", "Netral", "Tidak Puas"], key=f"satisfaction_{i}")
-                if satisfaction_rating:
-                    satisfaction_count += 1
-                    satisfaction_ratings.append(satisfaction_rating)
-else:
-    # Untuk mengakhiri aplikasi
-    st.warning("Aplikasi telah ditutup.")
-
-# Tampilkan visualisasi tingkat kepuasan dan jumlah respons
-st.header("Feedback & Satisfaction Report")
-st.write(f"Jumlah Respons: {satisfaction_count}")
-if satisfaction_ratings:
-    satisfaction_data = pd.DataFrame(satisfaction_ratings, columns=["Tingkat Kepuasan"])
-    st.dataframe(satisfaction_data)
-    # Visualisasi dalam bentuk diagram lingkaran
-    satisfaction_counts = satisfaction_data["Tingkat Kepuasan"].value_counts()
-    fig, ax = plt.subplots()
-    ax.pie(satisfaction_counts, labels=satisfaction_counts.index, autopct='%1.1f%%', startangle=90)
-    ax.axis('equal')  # Memastikan lingkaran berbentuk bulat
-    st.pyplot(fig)
+            st.markdown(
+                f"""
+                <div style="
+                    border-radius: 15px;
+                    background-color: {color};
+                    padding: 10px;
+                    margin: 10px 0;
+                ">
+                    Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+    else:
+        # Custom warning message
+        st.markdown(
+            """
+            <div class="custom-warning">
+                Kindly provide a comprehensive and detailed description of the issue you are facing, and I will offer the solution as accurately as possible!
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
