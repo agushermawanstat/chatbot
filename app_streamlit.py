@@ -8,7 +8,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-# Load data
+logo_path = 'logokalbe.png'
+st.image(logo_path, width=200)
 df = pd.read_excel('Laptop tidak dapat terhubung ke Wi-Fi.xlsx')
 
 # Train LSTM model (Let's use st.cache for caching the model)
