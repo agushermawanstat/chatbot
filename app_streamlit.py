@@ -103,6 +103,20 @@ user_input = st.text_area("Enter your question (type 'exit' to exit):", key='use
 st.markdown(
     """
     <style>
+        .input-container {
+            position: relative;
+        }
+        .submit-button {
+            background-color: #4CAF50; /* Green background color */
+            color: white; /* White text color */
+            padding: 10px 20px; /* Add padding to the button */
+            border: none; /* Remove button border */
+            border-radius: 5px; /* Add border radius to the button */
+            font-size: 16px; /* Adjust font size as needed */
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
         textarea {
             width: 100%; /* Set the width of the textarea to 100% of the container */
             border: none; /* Remove the textarea border */
@@ -115,6 +129,12 @@ st.markdown(
 )
 
 if user_input.lower() != 'exit':
+    # Wrap the input and submit button in a container div
+    input_container = st.container()
+    with input_container:
+        # Add the Submit button with green background and white text
+        st.button("Submit", key='submit_button', class_="submit-button")
+    
     response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
     if response_options:
         for i, (response, probability) in enumerate(response_options, start=1):
