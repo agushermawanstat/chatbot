@@ -93,9 +93,11 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-
 # Streamlit UI
 st.title("CIT-Knowledge Management Chatbot")
+
+# Sidebar untuk tombol "Home"
+st.sidebar.button("Home")
 
 # Gantilah bagian while loop seperti di bawah agar sesuai dengan pola penggunaan Streamlit yang benar
 user_input = st.text_input("Enter your question (type 'exit' to exit):", key="user_input")
@@ -135,10 +137,3 @@ if user_input.lower() != 'exit':
             """,
             unsafe_allow_html=True
         )
-
-# Tombol "Home"
-if st.button("Home"):
-    # Reset state session
-    st.session_state.pop("asked_detail_question", None)
-    st.session_state.pop("feedback_df", None)
-    st.experimental_rerun()
