@@ -111,7 +111,8 @@ st.markdown(
     """
     <style>
         .input-container {
-            position: relative;
+            display: flex;
+            flex-direction: column;
         }
         textarea {
             width: 100%; /* Set the width of the textarea to 100% of the container */
@@ -119,16 +120,15 @@ st.markdown(
             padding: 10px; /* Add padding for a better appearance */
             font-size: 16px; /* Adjust font size as needed */
         }
-        [data-testid="stButton_submit_button"] {
-            position: absolute;
-            bottom: 0;
-            right: 0;
+        .submit-button {
+            align-self: flex-end;
             background-color: #4CAF50; /* Green background color */
             color: white; /* White text color */
             padding: 10px 20px; /* Add padding to the button */
             border: none; /* Remove button border */
             border-radius: 5px; /* Add border radius to the button */
             font-size: 16px; /* Adjust font size as needed */
+            margin-top: 10px; /* Add margin to the top of the button */
         }
     </style>
     """,
@@ -139,7 +139,7 @@ st.markdown(
 display_custom_warning = False
 
 # Add a Submit button with a green background
-if st.button("Submit", key='submit_button'):
+if st.button("Submit", key='submit_button', class_="submit-button"):
     if user_input.lower() != 'exit':
         response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
         if response_options:
@@ -175,4 +175,3 @@ if display_custom_warning:
         """,
         unsafe_allow_html=True
     )
-
