@@ -51,7 +51,7 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
 
         if len(similarities) == 0 or len(similarities) < top_k or all(similarity == 0 for similarity in similarities):
             # Tambahkan argumen key yang unik
-            detail_question = st.text_area("Saya perlu informasi lebih detail untuk memberikan jawaban yang lebih akurat. Mohon berikan detail pertanyaan atau masalah Anda:", key="detail_area")
+            detail_question = st.text_area("Saya perlu informasi lebih detail untuk memberikan jawaban yang lebih akurat. Mohon berikan detail pertanyaan atau masalah Anda:", key="detail_area_" + str(hash(user_input)))
             user_input += " " + detail_question
         else:
             max_probability = max(similarities)
