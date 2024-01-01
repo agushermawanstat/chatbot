@@ -98,16 +98,16 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
 # Streamlit UI
 st.title("CIT-Knowledge Management Chatbot")
 
-# Get user input with wider input box
-user_input = st.text_input("Masukkan pertanyaan Anda (ketik 'exit' untuk keluar):", key='user_input')
+# Get user input with wider input box and the same prompt as before
+user_input = st.text_area("To provide a more accurate answer, please provide details of your question or issue (type 'exit' to exit):", key='user_input')
 st.markdown(
     """
     <style>
-        input#user_input {
-            width: 100%; /* Atur lebar input ke 100% dari kontainer */
-            border: none; /* Hapus border input */
-            padding: 10px; /* Tambahkan padding untuk tampilan yang lebih baik */
-            font-size: 16px; /* Sesuaikan ukuran font sesuai kebutuhan */
+        textarea {
+            width: 100%; /* Set the width of the textarea to 100% of the container */
+            border: none; /* Remove the textarea border */
+            padding: 10px; /* Add padding for a better appearance */
+            font-size: 16px; /* Adjust font size as needed */
         }
     </style>
     """,
