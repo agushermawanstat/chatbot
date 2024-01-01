@@ -93,11 +93,33 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-
-# ...
-
 # Streamlit UI
 st.title("CIT-Knowledge Management Chatbot")
+
+# Tambahkan CSS untuk style kotak dengan gradasi warna yang lebih lembut (pastel)
+st.markdown(
+    """
+    <style>
+        .feedback-box {
+            border-radius: 10px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        .feedback-box-green {
+            background: #ADFF2F;  /* Hijau */
+        }
+
+        .feedback-box-yellow {
+            background: #FFD700;  /* Kuning */
+        }
+
+        .feedback-box-red {
+            background: #F08080;  /* Merah */
+        }
+    </style>
+    """
+)
 
 # Gantilah bagian while loop seperti di bawah agar sesuai dengan pola penggunaan Streamlit yang benar
 user_input = st.text_input("Enter your question (type 'exit' to exit):")
@@ -107,25 +129,11 @@ if user_input.lower() != 'exit':
         for i, (response, probability) in enumerate(response_options, start=1):
             # Hitung gradasi warna sesuai dengan probabilitas
             if probability >= 0.8:
-                color = "#ADFF2F"  # Hijau
+                box_class = "feedback-box-green"  # Hijau
             elif probability >= 0.5:
-                color = "#FFD700"  # Kuning
+                box_class = "feedback-box-yellow"  # Kuning
             else:
-                color = "#F08080"  # Merah
-            
-            # Tambahkan CSS untuk style kotak dengan gradasi warna yang lebih lembut (pastel)
-            st.markdown(
-                f"""
-                <style>
-                    .feedback-box-{i} {{
-                        background: {color};
-                        border-radius: 10px;
-                        padding: 10px;
-                        margin: 10px 0;
-                    }}
-                </style>
-                """
-            )
+                box_class = "feedback-box-red"  # Merah
             
             # Tambahkan slider untuk rating bintang dengan menggunakan argumen key yang unik
             rating = st.slider(f"Rate the response (1 to 5 stars):", min_value=1, max_value=5, step=1, key=f"rating_{i}")
@@ -138,7 +146,7 @@ if user_input.lower() != 'exit':
             })
             
             # Tampilkan hasil feedback
-            st.markdown(f'<div class="feedback-box-{i}">')
+            st.markdown(f'<div class="{box_class} feedback-box">')
             st.write(f"Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}")
             st.write(f"Rating: {rating} stars")
             st.markdown('</div>')
