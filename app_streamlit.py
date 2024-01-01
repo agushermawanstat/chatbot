@@ -153,7 +153,8 @@ if user_input.lower() != 'exit':
             """,
             unsafe_allow_html=True
         )
-# ...
+st.subheader("Feedback Data")
+st.dataframe(df)
 
 # Visualisasikan persentase kepuasan
 if "Feedback" in df.columns:
