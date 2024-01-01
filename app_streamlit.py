@@ -157,3 +157,13 @@ if st.button("Submit", key='submit_button'):
                     """,
                     unsafe_allow_html=True
                 )
+        else:
+            # Custom warning message
+            st.markdown(
+                """
+                <div class="custom-warning">
+                    Kindly provide a comprehensive and detailed description of the issue you are facing, and I will offer the solution as accurately as possible!
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
