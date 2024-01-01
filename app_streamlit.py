@@ -93,33 +93,10 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# ...
+
 # Streamlit UI
 st.title("CIT-Knowledge Management Chatbot")
-
-# Tambahkan CSS untuk style kotak dengan gradasi warna yang lebih lembut (pastel)
-st.markdown(
-    """
-    <style>
-        .feedback-box {
-            border-radius: 10px;
-            padding: 10px;
-            margin: 10px 0;
-        }
-
-        .feedback-box-green {
-            background: #ADFF2F;  /* Hijau */
-        }
-
-        .feedback-box-yellow {
-            background: #FFD700;  /* Kuning */
-        }
-
-        .feedback-box-red {
-            background: #F08080;  /* Merah */
-        }
-    </style>
-    """
-)
 
 # Gantilah bagian while loop seperti di bawah agar sesuai dengan pola penggunaan Streamlit yang benar
 user_input = st.text_input("Enter your question (type 'exit' to exit):")
@@ -129,30 +106,43 @@ if user_input.lower() != 'exit':
         for i, (response, probability) in enumerate(response_options, start=1):
             # Hitung gradasi warna sesuai dengan probabilitas
             if probability >= 0.8:
-                box_class = "feedback-box-green"  # Hijau
+                color = "#ADFF2F"  # Hijau
             elif probability >= 0.5:
-                box_class = "feedback-box-yellow"  # Kuning
+                color = "#FFD700"  # Kuning
             else:
-                box_class = "feedback-box-red"  # Merah
-            
-            # Tambahkan slider untuk rating bintang dengan menggunakan argumen key yang unik
-            rating = st.slider(f"Rate the response (1 to 5 stars):", min_value=1, max_value=5, step=1, key=f"rating_{i}")
-            
-            # Tambahkan data feedback ke dalam DataFrame
-            feedback_data = pd.DataFrame({
-                "Response": [response],
-                "Probability": [probability],
-                "Rating": [rating]
-            })
-            
-            # Tampilkan hasil feedback
-            st.markdown(f'<div class="{box_class} feedback-box">')
-            st.write(f"Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}")
-            st.write(f"Rating: {rating} stars")
-            st.markdown('</div>')
-            
-            # Tambahkan feedback_data ke dalam DataFrame utama
-            df = pd.concat([df, feedback_data], ignore_index=True)
+                color = "#F08080"  # Merah
+
+            # Tambahkan CSS untuk style kotak dengan gradasi warna yang lebih lembut (pastel)
+            st.markdown(
+                f"""
+                <div style="
+                    border-radius: 15px;
+                    background-color: {color};
+                    padding: 10px;
+                    margin: 10px 0;
+                ">
+                    Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+            # Tampilkan widget feedback/rating
+            feedback = st.selectbox(f"Feedback for Option {i}:", ["", "👍 Positive", "👎 Negative"])
+            if feedback:
+                # Hitung persentase rating
+                rating_percentage = 100 if "👍" in feedback else 0
+
+                # Tambahkan data feedback ke DataFrame
+                feedback_data = {
+                    "Response": response,
+                    "Probability": probability,
+                    "Feedback": feedback,
+                    "Rating Percentage": rating_percentage
+                }
+                df_feedback = pd.DataFrame([feedback_data])
+                df = pd.concat([df, df_feedback], ignore_index=True)
+
     else:
         # Custom warning message
         st.markdown(
