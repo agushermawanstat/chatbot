@@ -97,4 +97,12 @@ if user_input.lower() != 'exit':
         for i, (response, probability) in enumerate(response_options, start=1):
             st.write(f"Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}")
     else:
-        st.warning("Maaf, saya tidak dapat memberikan jawaban dengan probabilitas yang memadai.")
+        # Custom warning message
+        st.markdown(
+            """
+            <div class="custom-warning">
+                Berikan penjelasan masalah yang anda hadapi secara detail dan lengkap, maka saya akan memberikan pendekatan jawaban seakurat mungkin
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
