@@ -94,15 +94,12 @@ st.markdown(
 )
 
 
-# ...
-
 # Streamlit UI
 st.title("CIT-Knowledge Management Chatbot")
 
 # Tombol Home
 if st.button("Home"):
-    if 'asked_detail_question' in st.session_state:
-        del st.session_state.asked_detail_question  # Reset flag for detail question
+    st.experimental_reset_session()
 
 # Gantilah bagian while loop seperti di bawah agar sesuai dengan pola penggunaan Streamlit yang benar
 user_input = st.text_input("Enter your question (type 'exit' to exit):", key="user_input")
