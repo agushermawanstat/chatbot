@@ -93,49 +93,59 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# Inisialisasi variabel sesi
+if 'current_session' not in st.session_state:
+    st.session_state.current_session = 'home'
 
 # Streamlit UI
 st.title("CIT-Knowledge Management Chatbot")
 
-# Tombol Home
-if st.button("Home"):
-    st.experimental_reset_session()
-
 # Gantilah bagian while loop seperti di bawah agar sesuai dengan pola penggunaan Streamlit yang benar
 user_input = st.text_input("Enter your question (type 'exit' to exit):", key="user_input")
+
+# Tambahkan tombol Home
+if st.session_state.current_session == 'chat':
+    if st.button("Home"):
+        # Reset sesi ke beranda
+        st.experimental_reset_session()
+        st.session_state.current_session = 'home'
+
 if user_input.lower() != 'exit':
-    response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
-    if response_options:
-        for i, (response, probability) in enumerate(response_options, start=1):
-            # Hitung gradasi warna sesuai dengan probabilitas
-            if probability >= 0.8:
-                color = "#ADFF2F"  # Hijau
-            elif probability >= 0.5:
-                color = "#FFD700"  # Kuning
-            else:
-                color = "#F08080"  # Merah
-            
-            # Tambahkan CSS untuk style kotak dengan gradasi warna yang lebih lembut (pastel)
+    if st.session_state.current_session == 'home':
+        st.write("Welcome to the chatbot! Ask a question to get started.")
+    else:
+        response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
+        if response_options:
+            for i, (response, probability) in enumerate(response_options, start=1):
+                # Hitung gradasi warna sesuai dengan probabilitas
+                if probability >= 0.8:
+                    color = "#ADFF2F"  # Hijau
+                elif probability >= 0.5:
+                    color = "#FFD700"  # Kuning
+                else:
+                    color = "#F08080"  # Merah
+                
+                # Tambahkan CSS untuk style kotak dengan gradasi warna yang lebih lembut (pastel)
+                st.markdown(
+                    f"""
+                    <div style="
+                        border-radius: 15px;
+                        background-color: {color};
+                        padding: 10px;
+                        margin: 10px 0;
+                    ">
+                        Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+        else:
+            # Custom warning message
             st.markdown(
-                f"""
-                <div style="
-                    border-radius: 15px;
-                    background-color: {color};
-                    padding: 10px;
-                    margin: 10px 0;
-                ">
-                    Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}
+                """
+                <div class="custom-warning">
+                    Kindly provide a comprehensive and detailed description of the issue you are facing, and I will offer the solution as accurately as possible!
                 </div>
                 """,
                 unsafe_allow_html=True
             )
-    else:
-        # Custom warning message
-        st.markdown(
-            """
-            <div class="custom-warning">
-                Kindly provide a comprehensive and detailed description of the issue you are facing, and I will offer the solution as accurately as possible!
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
