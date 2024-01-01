@@ -80,7 +80,6 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
             return generate_response_tfidf_with_probability_and_detail(user_input, df)
 
 # Inisialisasi variabel untuk melacak tingkat kepuasan dan jumlah respons
-satisfaction_count = 1  # Sudah termasuk feedback awal
 satisfaction_ratings = [feedback]  # Tambahkan feedback awal ke list
 
 # Set background color
@@ -129,7 +128,7 @@ else:
 
 # Tampilkan visualisasi tingkat kepuasan dan jumlah respons
 st.header("Feedback & Satisfaction Report")
-st.write(f"Jumlah Respons: {satisfaction_count}")
+st.write(f"Jumlah Respons: {len(satisfaction_ratings)}")
 if satisfaction_ratings:
     satisfaction_data = pd.DataFrame(satisfaction_ratings, columns=["Tingkat Kepuasan"])
     st.dataframe(satisfaction_data)
