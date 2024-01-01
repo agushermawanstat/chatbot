@@ -13,6 +13,9 @@ logo_path = 'logokalbe.png'
 st.image(logo_path, width=200)
 df = pd.read_excel('Laptop tidak dapat terhubung ke Wi-Fi.xlsx')
 
+# Tambahkan permintaan feedback di paling atas
+feedback = st.slider("Berikan tingkat kepuasan Anda (1-100%):", 1, 100, 50)
+
 # Train LSTM model (Let's use st.cache for caching the model)
 @st.cache(allow_output_mutation=True)
 def train_lstm_model():
@@ -119,7 +122,7 @@ if user_input.lower() != 'exit':
             expander_id = f"expander_{i}"  # ID unik untuk setiap expander
             with st.expander(f"Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}", expanded=False):
                 # Gunakan widget `key` untuk mencegah DuplicateWidgetID
-                satisfaction_rating = st.selectbox("Pilih tingkat kepuasan:", ["Puas", "Netral", "Tidak Puas"], key=f"satisfaction_{i}")
+                satisfaction_rating = st.select_slider("Pilih tingkat kepuasan:", options=list(range(1, 101)), key=f"satisfaction_{i}")
                 if satisfaction_rating:
                     satisfaction_count += 1
                     satisfaction_ratings.append(satisfaction_rating)
@@ -133,9 +136,11 @@ st.write(f"Jumlah Respons: {satisfaction_count}")
 if satisfaction_ratings:
     satisfaction_data = pd.DataFrame(satisfaction_ratings, columns=["Tingkat Kepuasan"])
     st.dataframe(satisfaction_data)
-    # Visualisasi dalam bentuk diagram lingkaran
-    satisfaction_counts = satisfaction_data["Tingkat Kepuasan"].value_counts()
-    fig, ax = plt.subplots()
-    ax.pie(satisfaction_counts, labels=satisfaction_counts.index, autopct='%1.1f%%', startangle=90)
-    ax.axis('equal')  # Memastikan lingkaran berbentuk bulat
+    # Visualisasi dalam bentuk diagram batang
+    satisfaction_counts = satisfaction_data["Tingkat Kepuasan"].value_counts().sort_index()
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.bar(satisfaction_counts.index, satisfaction_counts.values)
+    ax.set_xlabel("Tingkat Kepuasan (%)")
+    ax.set_ylabel("Jumlah Respons")
+    ax.set_title("Distribusi Tingkat Kepuasan")
     st.pyplot(fig)
