@@ -87,7 +87,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 # Streamlit UI
-st.title("Chatbot Teknis")
+st.title("CIT-Knowledge Management Chatbot")
 
 # Gantilah bagian while loop seperti di bawah agar sesuai dengan pola penggunaan Streamlit yang benar
 user_input = st.text_input("Masukkan pertanyaan Anda (ketik 'exit' untuk keluar):")
@@ -101,7 +101,7 @@ if user_input.lower() != 'exit':
         st.markdown(
             """
             <div class="custom-warning">
-                Berikan penjelasan masalah yang anda hadapi secara detail dan lengkap, maka saya akan memberikan pendekatan jawaban seakurat mungkin
+                Kindly provide a comprehensive and detailed description of the issue you are at hand, and I will offer the solution as accurately as possible!
             </div>
             """,
             unsafe_allow_html=True
