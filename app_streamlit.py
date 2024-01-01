@@ -89,7 +89,7 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
         st.markdown(
             """
             <div class="custom-warning">
-                Kindly provide a comprehensive and detailed description of the issue you are facing, and I will offer the solution as accurately as possible!
+                Kindly provide a comprehensive and detailed description of the issue you are at hand, and I will offer the solution as accurately as possible!
             </div>
             """,
             unsafe_allow_html=True
