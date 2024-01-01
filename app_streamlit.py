@@ -64,12 +64,9 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
 # Streamlit UI
 st.title("Chatbot Teknis")
 
-while True:
-    user_input = st.text_input("Masukkan pertanyaan Anda (ketik 'exit' untuk keluar):")
-    
-    if user_input.lower() == 'exit':
-        break
-    
+# Gantilah bagian while loop seperti di bawah agar sesuai dengan pola penggunaan Streamlit yang benar
+user_input = st.text_input("Masukkan pertanyaan Anda (ketik 'exit' untuk keluar):")
+if user_input.lower() != 'exit':
     response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
     if response_options:
         for i, (response, probability) in enumerate(response_options, start=1):
