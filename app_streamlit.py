@@ -98,8 +98,22 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
 # Streamlit UI
 st.title("CIT-Knowledge Management Chatbot")
 
-# Get user input
-user_input = st.text_input("Enter your question (type 'exit' to exit):")
+# Get user input with wider input box
+user_input = st.text_input("Masukkan pertanyaan Anda (ketik 'exit' untuk keluar):", key='user_input')
+st.markdown(
+    """
+    <style>
+        input#user_input {
+            width: 100%; /* Atur lebar input ke 100% dari kontainer */
+            border: none; /* Hapus border input */
+            padding: 10px; /* Tambahkan padding untuk tampilan yang lebih baik */
+            font-size: 16px; /* Sesuaikan ukuran font sesuai kebutuhan */
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 if user_input.lower() != 'exit':
     response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
     if response_options:
