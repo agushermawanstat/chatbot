@@ -176,4 +176,3 @@ if display_custom_warning:
         """,
         unsafe_allow_html=True
     )
-
