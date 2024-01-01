@@ -118,10 +118,8 @@ if user_input.lower() != 'exit':
                 color = "#F08080"  # Merah
             
             # Tambahkan CSS untuk style kotak dengan gradasi warna yang lebih lembut (pastel)
-            expander_id = f"expander_{i}"  # ID unik untuk setiap expander
             with st.expander(f"Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}", expanded=False):
-                # Gunakan widget `key` untuk mencegah DuplicateWidgetID
-                st.write(f"Feedback: {satisfaction_ratings[i-1]}%")
+                pass  # Biarkan kosong
 else:
     # Untuk mengakhiri aplikasi
     st.warning("Aplikasi telah ditutup.")
