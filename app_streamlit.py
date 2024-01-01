@@ -100,6 +100,8 @@ st.title("CIT-Knowledge Management Chatbot")
 
 # Get user input with wider input box and the same prompt as before
 user_input = st.text_area("Enter your question (type 'exit' to exit):", key='user_input')
+submit_button = st.button("Submit")  # Tambahkan tombol "Submit"
+
 st.markdown(
     """
     <style>
@@ -128,24 +130,25 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-if user_input.lower() != 'exit':
-    response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
-    if response_options:
-        for i, (response, probability) in enumerate(response_options, start=1):
-            # Define response box color based on probability
-            if probability >= 0.8:
-                color = "#ADFF2F"  # Green
-            elif probability >= 0.5:
-                color = "#FFD700"  # Yellow
-            else:
-                color = "#F08080"  # Red
+if submit_button:  # Mengeksekusi kode ini hanya jika tombol "Submit" ditekan
+    if user_input.lower() != 'exit':
+        response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
+        if response_options:
+            for i, (response, probability) in enumerate(response_options, start=1):
+                # Define response box color based on probability
+                if probability >= 0.8:
+                    color = "#ADFF2F"  # Green
+                elif probability >= 0.5:
+                    color = "#FFD700"  # Yellow
+                else:
+                    color = "#F08080"  # Red
 
-            # Display response with colored box
-            st.markdown(
-                f"""
-                <div class="response-box" style="background-color: {color};">
-                    Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+                # Display response with colored box
+                st.markdown(
+                    f"""
+                    <div class="response-box" style="background-color: {color};">
+                        Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
