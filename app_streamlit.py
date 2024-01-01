@@ -58,8 +58,7 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
             # Tambahkan argumen key yang unik
             detail_question = st.text_area("To provide a more accurate answer, please provide details of your question or issue:", key="detail_area_" + str(hash(user_input)))
             user_input += " " + detail_question
-            response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
-            return response_options
+            return generate_response_tfidf_with_probability_and_detail(user_input, df)
     else:
         max_probability = max(similarities)
         if max_probability >= threshold_probability:
@@ -69,8 +68,7 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
         else:
             # Tambahkan argumen key yang unik
             user_input = st.text_area(f"Probabilitas jawaban tertinggi saat ini kurang dari {threshold_probability*100}%. Berikan lebih banyak detail pertanyaan atau masalah Anda:", key="prob_area")
-            response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
-            return response_options
+            return generate_response_tfidf_with_probability_and_detail(user_input, df)
 
 st.markdown(
     """
@@ -98,6 +96,9 @@ if user_input.lower() != 'exit':
     if response_options:
         for i, (response, probability) in enumerate(response_options, start=1):
             st.write(f"Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}")
+        
+        # Tampilkan kolom pertanyaan setelah selesai respond
+        st.text_area("To provide a more accurate answer, please provide details of your question or issue:")
     else:
         # Custom warning message
         st.markdown(
