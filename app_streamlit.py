@@ -155,6 +155,12 @@ if user_input.lower() != 'exit':
         )
 # ...
 
+# ...
+
+# Tambahkan kolom 'Feedback' ke DataFrame jika belum ada
+if 'Feedback' not in df.columns:
+    df['Feedback'] = ''
+
 # Visualisasikan persentase kepuasan
 if not df.empty:
     st.subheader("Satisfaction Percentage")
@@ -168,4 +174,5 @@ if not df.empty:
     st.subheader("Number of Respondents")
     st.write(f"Positive Feedback Respondents: {df[df['Feedback'] == '👍'].shape[0]}")
     st.write(f"Negative Feedback Respondents: {df[df['Feedback'] == '👎'].shape[0]}")
+
 
