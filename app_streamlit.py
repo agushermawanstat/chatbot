@@ -95,15 +95,40 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
             unsafe_allow_html=True
         )
 
+import streamlit as st
+
 # Streamlit UI
 st.title("CIT-Knowledge Management Chatbot")
 
 # Get user input with wider input box and the same prompt as before
 user_input = st.text_area("Enter your question (type 'exit' to exit):", key='user_input')
 if user_input.lower() == 'exit':
-    submit_button = st.button("Reset")  # Jika pengguna ingin keluar, ganti label tombol menjadi "Reset"
+    st.button("Reset")  # Jika pengguna ingin keluar, tampilkan tombol "Reset"
 else:
-    submit_button = st.button("Submit")  # Jika tidak, gunakan label "Submit" biasa
+    col1, col2 = st.beta_columns(2)  # Membagi layar menjadi dua kolom
+    if col1.button("Submit"):  # Tombol "Submit" di kolom pertama
+        response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
+        if response_options:
+            for i, (response, probability) in enumerate(response_options, start=1):
+                # Define response box color based on probability
+                if probability >= 0.8:
+                    color = "#ADFF2F"  # Green
+                elif probability >= 0.5:
+                    color = "#FFD700"  # Yellow
+                else:
+                    color = "#F08080"  # Red
+
+                # Display response with colored box
+                st.markdown(
+                    f"""
+                    <div class="response-box" style="background-color: {color};">
+                        Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+    if col2.button("Reset"):  # Tombol "Reset" di kolom kedua
+        user_input = ""  # Reset pertanyaan pengguna
 
 st.markdown(
     """
@@ -133,27 +158,3 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-if submit_button:  # Mengeksekusi kode ini hanya jika tombol "Submit" atau "Reset" ditekan
-    if user_input.lower() == 'exit':
-        st.text("You have exited the chat.")  # Menampilkan pesan ketika pengguna keluar
-    else:
-        response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
-        if response_options:
-            for i, (response, probability) in enumerate(response_options, start=1):
-                # Define response box color based on probability
-                if probability >= 0.8:
-                    color = "#ADFF2F"  # Green
-                elif probability >= 0.5:
-                    color = "#FFD700"  # Yellow
-                else:
-                    color = "#F08080"  # Red
-
-                # Display response with colored box
-                st.markdown(
-                    f"""
-                    <div class="response-box" style="background-color: {color};">
-                        Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
