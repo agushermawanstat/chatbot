@@ -9,11 +9,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-# Display company logo with specified width
 logo_path = 'path/to/your/logo.png'  # Replace with the actual path to your logo file
 st.image(logo_path, width=200)  # Adjust the width as needed
-
-# Load data
 df = pd.read_excel('Laptop tidak dapat terhubung ke Wi-Fi.xlsx')
 
 # Train LSTM model
@@ -72,24 +69,6 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
             user_input = st.text_area(f"Probabilitas jawaban tertinggi saat ini kurang dari {threshold_probability*100}%. Berikan lebih banyak detail pertanyaan atau masalah Anda:", key="prob_area")
             return generate_response_tfidf_with_probability_and_detail(user_input, df)
 
-# Inject custom CSS to set background color to white
-st.markdown(
-    """
-    <style>
-        body {
-            background-color: #ffffff;
-        }
-        .custom-warning {
-            background-color: #4CAF50;  /* Green background color */
-            color: white; /* White text color */
-            padding: 10px; /* Add some padding */
-            margin: 10px 0; /* Add some margin */
-        }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
 # Streamlit UI
 st.title("CIT-Knowledge Management Chatbot")
 
@@ -101,12 +80,4 @@ if user_input.lower() != 'exit':
         for i, (response, probability) in enumerate(response_options, start=1):
             st.write(f"Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}")
     else:
-        # Custom warning message
-        st.markdown(
-            """
-            <div class="custom-warning">
-                Berikan penjelasan masalah yang anda hadapi secara detail dan lengkap, maka saya akan memberikan pendekatan jawaban seakurat mungkin
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+        st.warning("Maaf, saya tidak dapat memberikan jawaban dengan probabilitas yang memadai.")
