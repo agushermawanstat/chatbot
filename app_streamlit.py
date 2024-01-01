@@ -106,22 +106,21 @@ st.markdown(
         .input-container {
             position: relative;
         }
-        textarea {
-            width: 100%; /* Set the width of the textarea to 100% of the container */
-            border: none; /* Remove the textarea border */
-            padding: 10px; /* Add padding for a better appearance */
-            font-size: 16px; /* Adjust font size as needed */
-        }
-        .submit-button-container {
-            display: flex;
-            justify-content: flex-end;
-        }
-        [data-testid="stButton_submit_button"] {
+        .submit-button {
             background-color: #4CAF50; /* Green background color */
             color: white; /* White text color */
             padding: 10px 20px; /* Add padding to the button */
             border: none; /* Remove button border */
             border-radius: 5px; /* Add border radius to the button */
+            font-size: 16px; /* Adjust font size as needed */
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+        textarea {
+            width: 100%; /* Set the width of the textarea to 100% of the container */
+            border: none; /* Remove the textarea border */
+            padding: 10px; /* Add padding for a better appearance */
             font-size: 16px; /* Adjust font size as needed */
         }
     </style>
@@ -129,43 +128,24 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Initialize a variable to track whether to display the custom warning
-display_custom_warning = False
+if user_input.lower() != 'exit':
+    response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
+    if response_options:
+        for i, (response, probability) in enumerate(response_options, start=1):
+            # Define response box color based on probability
+            if probability >= 0.8:
+                color = "#ADFF2F"  # Green
+            elif probability >= 0.5:
+                color = "#FFD700"  # Yellow
+            else:
+                color = "#F08080"  # Red
 
-# Add a Submit button with a green background
-if st.button("Submit", key='submit_button', key='submit_button'):
-    if user_input.lower() != 'exit':
-        response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
-        if response_options:
-            for i, (response, probability) in enumerate(response_options, start=1):
-                # Define response box color based on probability
-                if probability >= 0.8:
-                    color = "#ADFF2F"  # Green
-                elif probability >= 0.5:
-                    color = "#FFD700"  # Yellow
-                else:
-                    color = "#F08080"  # Red
-
-                # Display response with colored box
-                st.markdown(
-                    f"""
-                    <div class="response-box" style="background-color: {color};">
-                        Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-        else:
-            # Set the variable to display the custom warning
-            display_custom_warning = True
-
-# Display the custom warning if the variable is set to True
-if display_custom_warning:
-    st.markdown(
-        """
-        <div class="custom-warning">
-            Kindly provide a comprehensive and detailed description of the issue you are facing, and I will offer the solution as accurately as possible!
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+            # Display response with colored box
+            st.markdown(
+                f"""
+                <div class="response-box" style="background-color: {color};">
+                    Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
