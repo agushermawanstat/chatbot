@@ -13,7 +13,7 @@ logo_path = 'logokalbe.png'
 st.image(logo_path, width=200)
 df = pd.read_excel('Laptop tidak dapat terhubung ke Wi-Fi.xlsx')
 
-# Tambahkan permintaan feedback di paling atas
+# Tambahkan permintaan feedback di awal
 feedback = st.slider("Berikan tingkat kepuasan Anda (1-100%):", 1, 100, 50)
 
 # Train LSTM model (Let's use st.cache for caching the model)
@@ -80,8 +80,8 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
             return generate_response_tfidf_with_probability_and_detail(user_input, df)
 
 # Inisialisasi variabel untuk melacak tingkat kepuasan dan jumlah respons
-satisfaction_count = 0
-satisfaction_ratings = []
+satisfaction_count = 1  # Sudah termasuk feedback awal
+satisfaction_ratings = [feedback]  # Tambahkan feedback awal ke list
 
 # Set background color
 st.markdown(
@@ -104,13 +104,9 @@ st.markdown(
 # Streamlit UI
 st.title("CIT-Knowledge Management Chatbot")
 
-# Loop untuk menerima pertanyaan dari pengguna
-while True:
-    # Gantilah bagian while loop seperti di bawah agar sesuai dengan pola penggunaan Streamlit yang benar
-    user_input = st.text_input("Enter your question (type 'exit' to exit):")
-    if user_input.lower() == 'exit':
-        break
-    
+# Hanya satu kali permintaan input
+user_input = st.text_input("Enter your question (type 'exit' to exit):")
+if user_input.lower() != 'exit':
     response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
     if response_options:
         for i, (response, probability) in enumerate(response_options, start=1):
@@ -126,10 +122,10 @@ while True:
             expander_id = f"expander_{i}"  # ID unik untuk setiap expander
             with st.expander(f"Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}", expanded=False):
                 # Gunakan widget `key` untuk mencegah DuplicateWidgetID
-                satisfaction_rating = st.select_slider("Pilih tingkat kepuasan:", options=list(range(1, 101)), key=f"satisfaction_{i}")
-                if satisfaction_rating:
-                    satisfaction_count += 1
-                    satisfaction_ratings.append(satisfaction_rating)
+                st.write(f"Feedback: {satisfaction_ratings[i-1]}%")
+else:
+    # Untuk mengakhiri aplikasi
+    st.warning("Aplikasi telah ditutup.")
 
 # Tampilkan visualisasi tingkat kepuasan dan jumlah respons
 st.header("Feedback & Satisfaction Report")
