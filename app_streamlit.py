@@ -51,14 +51,7 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
     similarities = cosine_similarity(user_vector, tfidf_matrix).flatten()
 
     if len(similarities) == 0 or len(similarities) < top_k or all(similarity == 0 for similarity in similarities):
-        # Check if detail question has already been asked
-        if 'asked_detail_question' not in st.session_state:
-            # Set flag to indicate that the detail question has been asked
-            st.session_state.asked_detail_question = True
-            # Tambahkan argumen key yang unik
-            detail_question = st.text_area("To provide a more accurate answer, please provide details of your question or issue:", key="detail_area_" + str(hash(user_input)))
-            user_input += " " + detail_question
-            return generate_response_tfidf_with_probability_and_detail(user_input, df)
+        return None  # No valid response found
     else:
         max_probability = max(similarities)
         if max_probability >= threshold_probability:
@@ -66,9 +59,7 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
             response_options = [(df['answer'].iloc[index], similarities[index]) for index in top_k_indices if index < len(df)]
             return response_options
         else:
-            # Tambahkan argumen key yang unik
-            user_input = st.text_area(f"Probabilitas jawaban tertinggi saat ini kurang dari {threshold_probability*100}%. Berikan lebih banyak detail pertanyaan atau masalah Anda:", key="prob_area")
-            return generate_response_tfidf_with_probability_and_detail(user_input, df)
+            return None  # No valid response found
 
 st.markdown(
     """
@@ -86,6 +77,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 # Streamlit UI
 st.title("CIT-Knowledge Management Chatbot")
 
@@ -96,12 +88,18 @@ if user_input.lower() != 'exit':
     if response_options:
         for i, (response, probability) in enumerate(response_options, start=1):
             st.write(f"Option {i}: (Prob.: {probability:.0%}) {response.capitalize()}")
+        
+        # Display detail question textarea after the response is generated
+        if 'asked_detail_question' not in st.session_state:
+            st.session_state.asked_detail_question = True
+            detail_question = st.text_area("To provide a more accurate answer, please provide details of your question or issue:", key="detail_area_" + str(hash(user_input)))
+            user_input += " " + detail_question
     else:
         # Custom warning message
         st.markdown(
             """
             <div class="custom-warning">
-                Kindly provide a comprehensive and detailed description of the issue you are at hand, and I will offer the solution as accurately as possible!
+                Kindly provide a comprehensive and detailed description of the issue you are facing, and I will offer the solution as accurately as possible!
             </div>
             """,
             unsafe_allow_html=True
