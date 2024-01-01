@@ -10,7 +10,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 logo_path = 'logokalbe.png'
-st.image(logo_path, use_column_width=True)
+st.image(logo_path, width=200)
 
 df = pd.read_excel('Laptop tidak dapat terhubung ke Wi-Fi.xlsx')
 
