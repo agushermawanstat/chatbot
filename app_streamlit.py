@@ -15,12 +15,6 @@ st.markdown(
         body {
             background-color: #ffffff;
         }
-        .custom-warning {
-            background-color: #4CAF50;  /* Green background color */
-            color: white; /* White text color */
-            padding: 10px; /* Add some padding */
-            margin: 10px 0; /* Add some margin */
-        }
         .response-box {
             border-radius: 15px;
             padding: 10px;
@@ -106,14 +100,7 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
         return response_options
     else:
         # Custom warning message
-        st.markdown(
-            """
-            <div class="custom-warning">
-                Kindly provide a comprehensive and detailed description of the issue you are facing, and I will offer the solution as accurately as possible!
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+        st.warning("Kindly provide a comprehensive and detailed description of the issue you are facing, and I will offer the solution as accurately as possible!")
 
 # Streamlit UI
 st.title("CIT-Knowledge Management Chatbot")
@@ -135,7 +122,7 @@ st.markdown(
 )
 
 # Add a Submit button with a green background
-if st.button("Submit", key='submit_button'):
+if st.button("Submit", key='submit_button', class_="submit-button"):
     if user_input.lower() != 'exit':
         response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
         if response_options:
@@ -157,13 +144,3 @@ if st.button("Submit", key='submit_button'):
                     """,
                     unsafe_allow_html=True
                 )
-        else:
-            # Custom warning message
-            st.markdown(
-                """
-                <div class="custom-warning">
-                    Kindly provide a comprehensive and detailed description of the issue you are facing, and I will offer the solution as accurately as possible!
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
