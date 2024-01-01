@@ -102,11 +102,8 @@ if user_input.lower() != 'exit':
     response_options = generate_response_tfidf_with_probability_and_detail(user_input, df)
     if response_options:
         for i, (response, probability) in enumerate(response_options, start=1):
-            # Tentukan warna latar belakang dengan transparansi berdasarkan probabilitas
-            color = (
-                f"rgba({255 - int(min(2 * probability, 1) * 255)}, "
-                f"{int(min(2 * probability, 1) * 255)}, 0, {0.3 + 0.7 * min(probability, 1)})"
-            )
+            # Tentukan warna latar belakang dengan transparansi 50%
+            color = f"rgba({255 - int(min(2 * probability, 1) * 255)}, {int(min(2 * probability, 1) * 255)}, 0, 0.5)"
             
             # Tambahkan CSS untuk style kotak dengan gradasi warna dan transparansi
             st.markdown(
