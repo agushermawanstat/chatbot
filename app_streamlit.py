@@ -34,7 +34,7 @@ st.markdown(
 # Load data
 logo_path = 'logokalbe.png'
 st.image(logo_path, width=200)
-df = pd.read_excel('traindata.xlsx')
+df = pd.read_excel('Laptop tidak dapat terhubung ke Wi-Fi.xlsx')
 
 # Train LSTM model (Let's use st.cache for caching the model)
 @st.cache(allow_output_mutation=True)
