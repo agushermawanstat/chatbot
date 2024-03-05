@@ -98,7 +98,7 @@ def generate_response_tfidf_with_probability_and_detail(user_input, df, top_k=5,
 import streamlit as st
 
 # Streamlit UI
-st.title("CIT-Knowledge Management Chatbot")
+st.title("CIT-Knowledge Management")
 
 # Get user input with wider input box and the same prompt as before
 user_input = st.text_area("Enter your question (type 'exit' to exit):", key='user_input')
